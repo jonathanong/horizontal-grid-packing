@@ -5,7 +5,7 @@ html(lang="en")
     link(rel="stylesheet", href="./public/style.css")
     script(src='./build/build.js')
   body
-    #container
+    .hor-pack
       for image in images
         img(
           src = 'http://i.imgur.com/' + image.hash + image.ext,
@@ -13,7 +13,7 @@ html(lang="en")
           data-height = image.height
         )
     script.
-      var pack = require('hor-pack')(document.querySelector('#container'), {})
+      var pack = require('hor-pack')(document.querySelector('.hor-pack'), {})
       window.addEventListener('resize', function () {
         pack.reload()
       })

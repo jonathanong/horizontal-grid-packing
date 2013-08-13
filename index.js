@@ -11,58 +11,80 @@ function Pack(container, options) {
   this.images = [].slice.call(container.childNodes, 0)
   this.width = options.width || container.clientWidth
   this.height = options.height || 320
+  this.maxheight = options.maxheight || 400
   this.padding = options.padding || 0
 
-  this.removeElements()
   this.calculateAspectRatios()
   this.setup()
 }
 
-Pack.prototype.removeElements = function () {
-  this.images.forEach(remove)
-}
+Pack.prototype.reload = function (width) {
+  var container = this.container
 
-Pack.prototype.calculateAspectRatios = function () {
-  this.images.forEach(function (image) {
-    if (!image.aspectRatio) image.aspectRatio =
-      parseInt(image.getAttribute('data-width'), 10) /
-      parseInt(image.getAttribute('data-height'), 10)
-  })
+  container.style.visibility = 'hidden'
+
+  this.width = width ? width
+    : width === false ? this.width
+    : container.clientWidth
+
+  this.setup()
 }
 
 Pack.prototype.setup = function () {
   var index = 0
+  var container = this.container
+  var mirrors = this.mirror = []
 
   while (index < this.images.length)
     index += this.setupRow(index)
 
-  this.container.style.visibility = 'visible'
-}
+  var lastmirror = mirrors[mirrors.length - 1]
 
-Pack.prototype.reload = function () {
-  var container = this.container
-
-  container.style.visibility = 'hidden'
-  container.innerHTML = ''
-
-  this.width = container.clientWidth
-  this.setup()
+  container.style.height = (lastmirror.top + lastmirror.height) + 'px'
+  container.style.visibility = 'visible'
 }
 
 Pack.prototype.setupRow = function (index) {
+  var mirror = this.mirror
+  var padding = this.padding
   var x = this.calculateRowHeightAndCount(index)
-  var height = x[0]
+  var height = Math.min(x[0], this.maxheight)
   var count = x[1]
 
-  var div = document.createElement('div')
-  div.style.height = height + 'px'
+  var row = {
+    index: index,
+    height: height,
+    count: count
+  }
 
-  this.images.slice(index, index + count)
-  .forEach(function (image) {
-    div.appendChild(image)
+  var images = this.images.slice(index, index + count)
+  var imagemirrors = row.images = []
+  var lastrow = mirror[mirror.length - 1]
+  var top = row.top = lastrow
+    ? (lastrow.top + lastrow.height + padding)
+    : 0
+
+  images.forEach(function (image, i) {
+    var lastimage = i && imagemirrors[i - 1]
+    var left = lastimage
+      ? lastimage.right + padding
+      : 0
+    var width = Math.round(height * image.aspectRatio)
+
+    image.style.left = left + 'px'
+    image.style.top = top + 'px'
+    image.style.height = height + 'px'
+    image.style.width = width + 'px'
+
+    imagemirrors.push({
+      left: left,
+      width: width,
+      right: left + width,
+      image: image
+    })
   })
 
-  this.container.appendChild(div)
+  mirror.push(row)
 
   return count
 }
@@ -101,14 +123,20 @@ Pack.prototype.calculateRowHeight = function (index, count) {
   )
 }
 
+Pack.prototype.calculateAspectRatios = function (images) {
+  (images || this.images).forEach(calculateAspectRatio)
+}
+
+function calculateAspectRatio(image) {
+  if (!image.aspectRatio) image.aspectRatio =
+    parseInt(image.getAttribute('data-width'), 10) /
+    parseInt(image.getAttribute('data-height'), 10)
+}
+
 function getAspectRatio(x) {
   return x.aspectRatio
 }
 
 function add(a, b) {
   return a + b
-}
-
-function remove(x) {
-  x.parentNode.removeChild(x)
 }

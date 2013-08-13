@@ -4,38 +4,13 @@ body {
   padding: 0;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  vertical-align: middle;
-}
-
-#container {
+.hor-pack {
+  position: relative;
   visibility: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-#container > div {
-  white-space: nowrap;
-  overflow: hidden;
-  max-height: 360px;
+.hor-pack img {
+  position: absolute;
 }
-
-#container > div > img {
-  display: inline-block;
-  height: 100%;
-}
-
-/*
-
-#container {
-  margin: 10px;
-}
-
-#container > div + div {
-  margin-top: 10px;
-}
-
-#container > div > img ~ img{
-  margin-left: 10px;
-}
-*/
