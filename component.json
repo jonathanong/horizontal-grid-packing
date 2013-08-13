@@ -3,9 +3,12 @@
   "description": "Horizontally pack images",
   "version": "0.0.1",
   "scripts": [
-    "index.js"
+    "lib/pack.js"
   ],
-  "main": "index.js",
+  "styles": [
+    "lib/pack.css"
+  ],
+  "main": "lib/pack.js",
   "license": "MIT",
   "repo": "jonathanong/hor-pack"
 }

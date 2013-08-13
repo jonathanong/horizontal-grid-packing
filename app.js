@@ -15,7 +15,7 @@ app.get('*', function (req, res, next) {
   res.render('layout')
 })
 
-request('http://imgur.com/r/emmawatson.json', function (err, res, body) {
+request('http://imgur.com/r/alisonbrie.json', function (err, res, body) {
   if (err)
     throw err
 

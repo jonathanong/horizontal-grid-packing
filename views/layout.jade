@@ -2,7 +2,17 @@
 html(lang="en")
   head
     title Example
-    link(rel="stylesheet", href="./public/style.css")
+    style.
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      div {
+        margin: 5px;
+      }
+    link(rel="stylesheet", href="./build/build.css")
     script(src='./build/build.js')
   body
     .hor-pack
@@ -13,7 +23,10 @@ html(lang="en")
           data-height = image.height
         )
     script.
-      var pack = require('hor-pack')(document.querySelector('.hor-pack'), {})
+      var Pack = require('hor-pack')
+      var pack = Pack(document.querySelector('.hor-pack'), {
+        padding: 5
+      })
       window.addEventListener('resize', function () {
         pack.reload()
       })
