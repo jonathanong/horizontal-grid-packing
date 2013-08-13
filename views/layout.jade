@@ -1,0 +1,18 @@
+!!! 5
+html(lang="en")
+  head
+    title Example
+    link(rel="stylesheet", href="/style.css")
+    script(src='/build.js')
+  body
+    #container
+      for image in images
+        img(
+          src = 'http://i.imgur.com/' + image.hash + image.ext,
+          data-width = image.width,
+          data-height = image.height
+        )
+    script.
+      require('hor-pack')(document.querySelector('#container'), {
+
+      })

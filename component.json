@@ -1,0 +1,11 @@
+{
+  "name": "hor-pack",
+  "description": "Horizontally pack images",
+  "version": "0.0.1",
+  "scripts": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "license": "MIT",
+  "repo": "jonathanong/hor-pack"
+}
