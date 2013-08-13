@@ -9,8 +9,7 @@ var images
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
 
-app.use(express.static(__dirname + '/build'))
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname))
 
 app.get('*', function (req, res, next) {
   res.render('layout')
