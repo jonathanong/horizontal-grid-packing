@@ -13,6 +13,7 @@ html(lang="en")
           data-height = image.height
         )
     script.
-      require('hor-pack')(document.querySelector('#container'), {
-
+      var pack = require('hor-pack')(document.querySelector('#container'), {})
+      window.addEventListener('resize', function () {
+        pack.reload()
       })

@@ -10,6 +10,10 @@ img {
   vertical-align: middle;
 }
 
+#container {
+  visibility: hidden;
+}
+
 #container > div {
   white-space: nowrap;
   overflow: hidden;

@@ -35,6 +35,18 @@ Pack.prototype.setup = function () {
 
   while (index < this.images.length)
     index += this.setupRow(index)
+
+  this.container.style.visibility = 'visible'
+}
+
+Pack.prototype.reload = function () {
+  var container = this.container
+
+  container.style.visibility = 'hidden'
+  container.innerHTML = ''
+
+  this.width = container.clientWidth
+  this.setup()
 }
 
 Pack.prototype.setupRow = function (index) {
@@ -57,17 +69,23 @@ Pack.prototype.setupRow = function (index) {
 
 Pack.prototype.calculateRowHeightAndCount = function (index) {
   var costs = []
+  var heights = []
   var count = 0
 
   var height, cost
 
-  while (count++ > -1) {
-    height = this.calculateRowHeight(index, count)
+  while (++count) {
+    height = heights[count] = this.calculateRowHeight(index, count)
     cost = costs[count] = Math.abs(height - this.height)
 
-    if (index + count === this.images.length
-      || (count > 1 && costs[count - 1] < cost)
-    ) return [height, count]
+    // If no more images or height smaller than targeted,
+    // return height and count
+    if (index + count === this.images.length || height < this.height)
+      return [height, count]
+
+    // If cost increases, return last height and count
+    if (count > 1 && costs[count - 1] < cost)
+      return [heights[count - 1], count - 1]
   }
 }
 
