@@ -78,14 +78,19 @@ Pack.prototype.calculateRowHeightAndCount = function (index) {
     height = heights[count] = this.calculateRowHeight(index, count)
     cost = costs[count] = Math.abs(height - this.height)
 
-    // If no more images or height smaller than targeted,
-    // return height and count
-    if (index + count === this.images.length || height < this.height)
+    // If no more images, return high and count
+    if (index + count === this.images.length)
       return [height, count]
 
     // If cost increases, return last height and count
     if (count > 1 && costs[count - 1] < cost)
       return [heights[count - 1], count - 1]
+
+    // If the height is smaller than the targeted,
+    // and the last height wasn't better than this one,
+    // return this one.
+    if (height < this.height)
+      return [height, count]
   }
 }
 

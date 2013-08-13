@@ -17,7 +17,7 @@ img {
 #container > div {
   white-space: nowrap;
   overflow: hidden;
-  max-height: 400px;
+  max-height: 360px;
 }
 
 #container > div > img {
