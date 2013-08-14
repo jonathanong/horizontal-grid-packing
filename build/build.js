@@ -505,7 +505,7 @@ function Pack(container, options) {
   this.container = container
   this.isFragment = container instanceof DocumentFragment
   this.classes = !this.isFragment && classes(container)
-  this.images = [].slice.call(container.childNodes, 0)
+  this.images = slice(container.childNodes)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
   this.height = options.height || Math.round(window.innerHeight / 3)
@@ -515,12 +515,21 @@ function Pack(container, options) {
 }
 
 Pack.prototype.append = function (images) {
-  images = [].slice.call(images, 0)
+  var fragment
 
-  var fragment = document.createDocumentFragment()
-  images.forEach(function (image) {
-    fragment.appendChild(image.parentNode.removeChild(image))
-  })
+  if (images instanceof DocumentFragment) {
+    fragment = images
+    images = slice(fragment.childNodes)
+  } else {
+    fragment = document.createDocumentFragment()
+    images = slice(images)
+    images.forEach(function (image) {
+      if (image.parentNode)
+        image.parentNode.removeChild(image)
+
+      fragment.appendChild(image)
+    })
+  }
 
   var subpack = new Pack(fragment, {
     top: this.totalheight + this.padding,
@@ -538,8 +547,15 @@ Pack.prototype.append = function (images) {
 }
 
 Pack.prototype.destroy = function () {
-  !this.isFragment && this.classes.remove('hor-pack')
   this.images.forEach(unsetStyle)
+  this.mirror = null
+
+  if (!this.isFragment) {
+    var style = this.container.style
+    style.visibility =
+    style.height = ''
+    this.classes.remove('hor-pack')
+  }
 }
 
 Pack.prototype.reload = function () {
@@ -553,15 +569,16 @@ Pack.prototype.create = function () {
   var container = this.container
   var mirrors = this.mirror = []
 
-  part(ratios, Math.min(
+  part(ratios, Math.max(Math.min(
     Math.floor(ratios.reduce(add, 0) * this.height / this.width),
-    ratios.length)
-  ).forEach(function (x) {
+    ratios.length
+  ), 1)).forEach(function (x) {
     index += this.createRow(index, x.length)
   }, this)
 
   var lastmirror = mirrors[mirrors.length - 1]
   this.totalheight = lastmirror.top + lastmirror.height
+  this.images.forEach(positionAbsolute)
 
   if (this.isFragment)
     return
@@ -627,12 +644,17 @@ Pack.prototype.calculateAspectRatios = function () {
   return this.images.map(calculateAspectRatio)
 }
 
+function positionAbsolute(image) {
+  image.style.position = 'absolute'
+}
+
 function unsetStyle(image) {
   var style = image.style
   style.width =
-  style.height = ''
+  style.height =
   style.top =
-  style.left = ''
+  style.left =
+  style.position = ''
 }
 
 function calculateAspectRatio(image) {
@@ -645,6 +667,10 @@ function calculateAspectRatio(image) {
 
 function getAspectRatio(x) {
   return x.aspectRatio
+}
+
+function slice(x) {
+  return [].slice.call(x, 0)
 }
 
 function add(a, b) {
