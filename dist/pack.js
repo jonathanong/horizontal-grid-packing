@@ -545,9 +545,13 @@ Pack.prototype.append = function (images) {
 }
 
 Pack.prototype.destroy = function () {
-  !this.isFragment && this.classes.remove('hor-pack')
   this.images.forEach(unsetStyle)
   this.mirror = null
+
+  if (!this.isFragment) {
+    this.container.style.visibility = ''
+    this.classes.remove('hor-pack')
+  }
 }
 
 Pack.prototype.reload = function () {
@@ -575,6 +579,8 @@ Pack.prototype.create = function () {
     return
 
   this.classes.add('hor-pack')
+
+  this.images.forEach(positionAbsolute)
 
   container.style.height = this.totalheight + 'px'
   container.style.visibility = 'visible'
@@ -635,12 +641,17 @@ Pack.prototype.calculateAspectRatios = function () {
   return this.images.map(calculateAspectRatio)
 }
 
+function positionAbsolute(image) {
+  image.style.position = 'absolute'
+}
+
 function unsetStyle(image) {
   var style = image.style
   style.width =
-  style.height = ''
+  style.height =
   style.top =
-  style.left = ''
+  style.left =
+  style.position = ''
 }
 
 function calculateAspectRatio(image) {
@@ -656,7 +667,7 @@ function getAspectRatio(x) {
 }
 
 function slice(x) {
-  [].slice.call(x, 0)
+  return [].slice.call(x, 0)
 }
 
 function add(a, b) {
