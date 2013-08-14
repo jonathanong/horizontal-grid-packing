@@ -549,7 +549,9 @@ Pack.prototype.destroy = function () {
   this.mirror = null
 
   if (!this.isFragment) {
-    this.container.style.visibility = ''
+    var style = this.container.style
+    style.visibility =
+    style.height = ''
     this.classes.remove('hor-pack')
   }
 }
@@ -565,10 +567,10 @@ Pack.prototype.create = function () {
   var container = this.container
   var mirrors = this.mirror = []
 
-  part(ratios, Math.min(
+  part(ratios, Math.max(Math.min(
     Math.floor(ratios.reduce(add, 0) * this.height / this.width),
-    ratios.length)
-  ).forEach(function (x) {
+    ratios.length
+  ), 1)).forEach(function (x) {
     index += this.createRow(index, x.length)
   }, this)
 
