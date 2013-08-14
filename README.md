@@ -33,8 +33,8 @@ The HTML must strictly be a single container whose children are strictly grid el
 
 ```html
 <div>
-  <element></element>
-  <element></element>
+  <img data-width="100" data-height="320">
+  <div data-aspect-ratio=".55"></div>
   <element></element>
   <element></element>
 </div>
