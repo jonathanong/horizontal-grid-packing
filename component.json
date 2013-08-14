@@ -9,6 +9,10 @@
     "lib/pack.css"
   ],
   "main": "lib/pack.js",
+  "dependencies": {
+    "component/classes": "*",
+    "jonathanong/linear-partition": "*"
+  },
   "license": "MIT",
   "repo": "jonathanong/hor-pack"
 }

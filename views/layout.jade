@@ -24,9 +24,12 @@ html(lang="en")
         )
     script.
       var Pack = require('hor-pack')
-      var pack = Pack(document.querySelector('.hor-pack'), {
+      var container = document.querySelector('.hor-pack')
+      var pack = Pack(container, {
         padding: 5
       })
       window.addEventListener('resize', function () {
+        pack.width = container.clientWidth
+        pack.height = Math.round(window.innerHeight / 3)
         pack.reload()
       })
