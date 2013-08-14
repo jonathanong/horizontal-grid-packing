@@ -56,7 +56,7 @@ var pack = new Pack(container, options)
 The `options` are:
 
 - `height` - Target row height in pixels.
-  `Math.round(window.innerHeight / 3)` by default.
+  `Math.round(window.innerHeight / Math.PI)` by default.
 - `padding` - Padding between each grid in pixels.
   `0` by default.
 

@@ -509,7 +509,7 @@ function Pack(container, options) {
   this.images = slice(container.childNodes)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
-  this.height = options.height || Math.round(window.innerHeight / 3)
+  this.height = options.height || Math.round(window.innerHeight / Math.PI)
   this.padding = options.padding || 0
 
   this.create()
@@ -551,12 +551,13 @@ Pack.prototype.destroy = function () {
   this.images.forEach(unsetStyle)
   this.mirror = null
 
-  if (!this.isFragment) {
-    var style = this.container.style
-    style.visibility =
-    style.height = ''
-    this.classes.remove('hor-pack')
-  }
+  if (this.isFragment)
+    return
+
+  var style = this.container.style
+  style.visibility =
+  style.height = ''
+  this.classes.remove('hor-pack')
 }
 
 Pack.prototype.reload = function () {
