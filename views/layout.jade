@@ -25,6 +25,7 @@ html(lang="en")
     script.
       var Pack = require('hor-pack')
       var container = document.querySelector('.hor-pack')
+      var imagesHTML = container.innerHTML
       var pack = Pack(container, {
         padding: 5
       })
@@ -33,3 +34,8 @@ html(lang="en")
         pack.height = Math.round(window.innerHeight / 3)
         pack.reload()
       })
+      function append() {
+        var frag = document.createElement('div')
+        frag.innerHTML = imagesHTML
+        pack.append(frag.children)
+      }
