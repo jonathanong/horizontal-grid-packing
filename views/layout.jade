@@ -24,7 +24,7 @@ html(lang="en")
     .hor-pack
       for image in images
         img(
-          src = 'http://i.imgur.com/' + image.hash + image.ext,
+          src = 'http://i.imgur.com/' + image.hash + 'l' + image.ext,
           data-width = image.width,
           data-height = image.height
         )
