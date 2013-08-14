@@ -2,8 +2,8 @@
 
 Packs images into rows so that each row takes up the full width.
 Row heights are dynamically adjusted.
-Similar to Masonry, but the space taken by all the grids will always be a rectangle versus any jagged edge.
-By being horizontal, it is also more linear (scan left to right, top to bottom).
+Similar to [Masonry](https://github.com/desandro/masonry), but the space taken by all the grids will always be a rectangle without any jagged edges.
+By being horizontal, users view the grid linearly (scan left to right, top to bottom) kind of like a comic book.
 
 Demo: http://jonathanong.github.io/hor-pack/
 
@@ -15,13 +15,12 @@ See:
 
 ## Install
 
+This package is written in vanilla Javascript (specifically without jQuery).
+If you use [component](https://github.com/component/component‎), the dependencies are handled for you.
+If you use [bower](https://github.com/bower/bower‎), the dependencies are packaged together.
+
 ```bash
 bower install jonathanong/hor-pack
-```
-
-or
-
-```bash
 component install jonathanong/hor-pack
 ```
 
@@ -41,7 +40,7 @@ The HTML must strictly be a single container whose children are strictly grid el
 ```
 
 This library assumes you know the aspect ratio of each grid element.
-Each element should either have a `data-aspect-ratio` attribute, `data-width` and `data-height` attributes, or a `.aspectRatio` attribute.
+Each element should either have a `data-aspect-ratio` attribute, `data-width` and `data-height` attributes, or an `.aspectRatio` Javascript attribute.
 If you do not know these attributes, use a library such as [imagesloaded](https://github.com/desandro/imagesloaded) to calculate the dimensions before using this library.
 
 ### Pack(container, options)
@@ -56,9 +55,9 @@ var pack = new Pack(container, options)
 `container` is the element that contains all the grids.
 The `options` are:
 
-- `height` - Target row height.
+- `height` - Target row height in pixels.
   `Math.round(window.innerHeight / 3)` by default.
-- `padding` - Padding between each grid.
+- `padding` - Padding between each grid in pixels.
   `0` by default.
 
 Each of these options can be changed as an attribute of `pack`:
@@ -74,13 +73,13 @@ pack.reload()
 
 Other options you may be interested are:
 
-- `width` - the width of the grid.
+- `width` - the width of the grid in pixels.
   You should change this when `container`'s width changes.
 
 ### pack.reload()
 
 Recalculates the grid.
-Specifically, you would want to use this when the image is resized:
+Specifically, you would want to use this when `container` is resized:
 
 ```js
 window.addEventListener('resize', function () {
@@ -102,13 +101,17 @@ Creates the grid.
 This is called by default.
 You should only use this if the grid has been previously destroyed.
 
-### pack.append(elements)
+### pack.append(fragment || elements)
 
 Append elements to the current grid.
+Could either be a `DocumentFragment` instance whose child nodes are `elements`,
+or an array-like variable of grid `elements`.
+Appends using `DocumentFragment`, so don't worry about reflows.
+You don't need to append the elements yourself like in Masonry.
 
 ## Compatibility
 
-IE9+ due to the use of ES5 Array methods.
+IE9+
 
 ## License
 
