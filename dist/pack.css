@@ -1,0 +1,10 @@
+.hor-pack {
+  position: relative;
+  visibility: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.hor-pack img {
+  position: absolute;
+}

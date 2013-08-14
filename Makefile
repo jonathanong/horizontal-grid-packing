@@ -8,4 +8,10 @@ lint:
 clean:
 	@rm -rf components
 
-.PHONY: build lint clean
+dist:
+	@component build \
+		--standalone Pack \
+		--out dist \
+		--name pack
+
+.PHONY: build lint clean dist

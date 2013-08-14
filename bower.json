@@ -1,0 +1,9 @@
+{
+  "name": "hor-pack",
+  "description": "Horizontally pack images",
+  "version": "0.0.1",
+  "main": [
+    "dist/pack.js",
+    "dist/pack.css"
+  ]
+}
