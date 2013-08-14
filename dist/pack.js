@@ -506,7 +506,7 @@ function Pack(container, options) {
   this.container = container
   this.isFragment = container instanceof DocumentFragment
   this.classes = !this.isFragment && classes(container)
-  this.images = [].slice.call(container.childNodes, 0)
+  this.images = slice(container.childNodes)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
   this.height = options.height || Math.round(window.innerHeight / 3)
@@ -516,12 +516,18 @@ function Pack(container, options) {
 }
 
 Pack.prototype.append = function (images) {
-  images = [].slice.call(images, 0)
+  var fragment
 
-  var fragment = document.createDocumentFragment()
-  images.forEach(function (image) {
-    fragment.appendChild(image.parentNode.removeChild(image))
-  })
+  if (images instanceof DocumentFragment) {
+    fragment = images
+    images = slice(fragment.childNodes)
+  } else {
+    fragment = document.createDocumentFragment()
+    images = slice(images)
+    images.forEach(function (image) {
+      fragment.appendChild(image.parentNode.removeChild(image))
+    })
+  }
 
   var subpack = new Pack(fragment, {
     top: this.totalheight + this.padding,
@@ -541,6 +547,7 @@ Pack.prototype.append = function (images) {
 Pack.prototype.destroy = function () {
   !this.isFragment && this.classes.remove('hor-pack')
   this.images.forEach(unsetStyle)
+  this.mirror = null
 }
 
 Pack.prototype.reload = function () {
@@ -646,6 +653,10 @@ function calculateAspectRatio(image) {
 
 function getAspectRatio(x) {
   return x.aspectRatio
+}
+
+function slice(x) {
+  [].slice.call(x, 0)
 }
 
 function add(a, b) {
