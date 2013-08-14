@@ -525,7 +525,10 @@ Pack.prototype.append = function (images) {
     fragment = document.createDocumentFragment()
     images = slice(images)
     images.forEach(function (image) {
-      fragment.appendChild(image.parentNode.removeChild(image))
+      if (image.parentNode)
+        image.parentNode.removeChild(image)
+
+      fragment.appendChild(image)
     })
   }
 
@@ -576,13 +579,12 @@ Pack.prototype.create = function () {
 
   var lastmirror = mirrors[mirrors.length - 1]
   this.totalheight = lastmirror.top + lastmirror.height
+  this.images.forEach(positionAbsolute)
 
   if (this.isFragment)
     return
 
   this.classes.add('hor-pack')
-
-  this.images.forEach(positionAbsolute)
 
   container.style.height = this.totalheight + 'px'
   container.style.visibility = 'visible'
