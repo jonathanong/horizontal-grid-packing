@@ -5,4 +5,7 @@ build:
 lint:
 	@jshint lib
 
-.PHONY: build lint
+clean:
+	@rm -rf components
+
+.PHONY: build lint clean
