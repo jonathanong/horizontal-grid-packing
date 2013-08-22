@@ -12,11 +12,14 @@ component:
 
 dist:
 	@component build \
-		--standalone Pack \
+		--standalone horizontalGridPacking \
 		--out dist \
-		--name pack
+		--name horizontal-grid-packing
 
-demo: component
+demo: npm component
 	@node demo
 
-.PHONY: build lint clean dist component demo
+npm:
+	@npm i
+
+.PHONY: build lint clean dist component demo npm
