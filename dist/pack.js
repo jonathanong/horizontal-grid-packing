@@ -483,7 +483,10 @@ linear_partition = function(seq, k) {
 };
 
 module.exports = function(seq, k) {
-  while (k >= 0) {
+  if (k <= 0) {
+    return [];
+  }
+  while (k) {
     try {
       return linear_partition(seq, k--);
     } catch (_error) {}

@@ -1,6 +1,4 @@
-build:
-	@component install
-	@component build
+build: component dist
 
 lint:
 	@jshint lib
@@ -8,10 +6,14 @@ lint:
 clean:
 	@rm -rf components
 
+component:
+	@component install
+	@component build
+
 dist:
 	@component build \
 		--standalone Pack \
 		--out dist \
 		--name pack
 
-.PHONY: build lint clean dist
+.PHONY: build lint clean dist component
