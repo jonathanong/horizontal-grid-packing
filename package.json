@@ -19,7 +19,6 @@
   "license": "MIT",
   "devDependencies": {
     "jade": "*",
-    "express": "*",
     "request": "*"
   }
 }

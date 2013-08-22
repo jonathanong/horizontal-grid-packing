@@ -16,4 +16,7 @@ dist:
 		--out dist \
 		--name pack
 
-.PHONY: build lint clean dist component
+demo: component
+	@node demo
+
+.PHONY: build lint clean dist component demo
