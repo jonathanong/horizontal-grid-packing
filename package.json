@@ -1,6 +1,6 @@
 {
-  "name": "hor-pack",
-  "description": "Horizontally pack images",
+  "name": "horizontal-grid-packing",
+  "description": "Horizontal grid packing",
   "version": "0.0.1",
   "author": {
     "name": "Jonathan Ong",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jonathanong/hor-pack.git"
+    "url": "https://github.com/jonathanong/horizontal-grid-packing.git"
   },
   "bugs": {
-    "url": "https://github.com/jonathanong/hor-pack/issues",
+    "url": "https://github.com/jonathanong/horizontal-grid-packing/issues",
     "email": "me@jongleberry.com"
   },
   "license": "MIT",

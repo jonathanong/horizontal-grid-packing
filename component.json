@@ -1,6 +1,6 @@
 {
-  "name": "hor-pack",
-  "description": "Horizontally pack images",
+  "name": "horizontal-grid-packing",
+  "description": "Horizontal grid packing",
   "version": "0.0.1",
   "scripts": [
     "lib/pack.js"
@@ -14,5 +14,5 @@
     "jonathanong/linear-partition": "*"
   },
   "license": "MIT",
-  "repo": "jonathanong/hor-pack"
+  "repo": "jonathanong/horizontal-grid-packing"
 }

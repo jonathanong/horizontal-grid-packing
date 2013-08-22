@@ -494,7 +494,7 @@ module.exports = function(seq, k) {
 };
 
 });
-require.register("hor-pack/lib/pack.js", function(exports, require, module){
+require.register("horizontal-grid-packing/lib/pack.js", function(exports, require, module){
 var part = require('linear-partition')
 var classes = require('classes')
 
@@ -560,7 +560,7 @@ Pack.prototype.destroy = function () {
   var style = this.container.style
   style.visibility =
   style.height = ''
-  this.classes.remove('hor-pack')
+  this.classes.remove('hgp')
 }
 
 Pack.prototype.reload = function () {
@@ -588,10 +588,11 @@ Pack.prototype.create = function () {
   if (this.isFragment)
     return
 
-  this.classes.add('hor-pack')
+  this.classes.add('hgp')
 
-  container.style.height = this.totalheight + 'px'
-  container.style.visibility = 'visible'
+  var style = container.style
+  style.height = this.totalheight + 'px'
+  style.visibility = 'visible'
 }
 
 Pack.prototype.createRow = function (index, count) {
@@ -684,18 +685,18 @@ function add(a, b) {
 });
 
 
-require.alias("component-classes/index.js", "hor-pack/deps/classes/index.js");
+require.alias("component-classes/index.js", "horizontal-grid-packing/deps/classes/index.js");
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
 
-require.alias("jonathanong-linear-partition/linear_partition.js", "hor-pack/deps/linear-partition/linear_partition.js");
-require.alias("jonathanong-linear-partition/linear_partition.js", "hor-pack/deps/linear-partition/index.js");
+require.alias("jonathanong-linear-partition/linear_partition.js", "horizontal-grid-packing/deps/linear-partition/linear_partition.js");
+require.alias("jonathanong-linear-partition/linear_partition.js", "horizontal-grid-packing/deps/linear-partition/index.js");
 require.alias("jonathanong-linear-partition/linear_partition.js", "linear-partition/index.js");
 require.alias("jonathanong-linear-partition/linear_partition.js", "jonathanong-linear-partition/index.js");
-require.alias("hor-pack/lib/pack.js", "hor-pack/index.js");if (typeof exports == "object") {
-  module.exports = require("hor-pack");
+require.alias("horizontal-grid-packing/lib/pack.js", "horizontal-grid-packing/index.js");if (typeof exports == "object") {
+  module.exports = require("horizontal-grid-packing");
 } else if (typeof define == "function" && define.amd) {
-  define(function(){ return require("hor-pack"); });
+  define(function(){ return require("horizontal-grid-packing"); });
 } else {
-  this["Pack"] = require("hor-pack");
+  this["Pack"] = require("horizontal-grid-packing");
 }})();

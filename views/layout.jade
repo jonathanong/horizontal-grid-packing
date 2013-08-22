@@ -21,7 +21,7 @@ html(lang="en")
     link(rel="stylesheet", href="./build/build.css")
     script(src='./build/build.js')
   body
-    .hor-pack
+    .horizontal-grid-packing
       for image in images
         img(
           src = 'http://i.imgur.com/' + image.hash + 'l' + image.ext,
@@ -29,8 +29,8 @@ html(lang="en")
           data-height = image.height
         )
     script.
-      var Pack = require('hor-pack')
-      var container = document.querySelector('.hor-pack')
+      var Pack = require('horizontal-grid-packing')
+      var container = document.querySelector('.horizontal-grid-packing')
       var imagesHTML = container.innerHTML
       var pack = Pack(container, {
         padding: 5

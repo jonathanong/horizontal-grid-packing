@@ -27,6 +27,6 @@ request('http://imgur.com/r/emmawatson.json', function (err, res, body) {
     if (err)
       throw err
 
-    console.log('hor-pack serving on port ' + port)
+    console.log('horizontal-grid-packing serving on port ' + port)
   })
 })
