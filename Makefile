@@ -12,7 +12,7 @@ component:
 
 dist:
 	@component build \
-		--standalone horizontalGridPacking \
+		--standalone HorizontalGridPacking \
 		--out dist \
 		--name horizontal-grid-packing
 

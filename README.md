@@ -15,13 +15,12 @@ See:
 
 ## Install
 
-This package is written in vanilla Javascript (specifically without jQuery).
 If you use [component](https://github.com/component/component‎), the dependencies are handled for you.
 If you use [bower](https://github.com/bower/bower‎), the dependencies are packaged together.
 
 ```bash
-bower install jonathanong/horizontal-grid-packing
 component install jonathanong/horizontal-grid-packing
+bower install horizontal-grid-packing
 ```
 
 ## API
@@ -40,7 +39,7 @@ The HTML must strictly be a single container whose children are strictly grid el
 ```
 
 This library assumes you know the aspect ratio of each grid element.
-Each element should either have a `data-aspect-ratio` attribute or `data-width` and `data-height` attributes.
+Each element should either have a `data-aspect-ratio` attribute or both `data-width` and `data-height` attributes.
 If you do not know these attributes, use a library such as [imagesloaded](https://github.com/desandro/imagesloaded) to calculate the dimensions before using this library.
 
 ### Pack(container, options)
@@ -48,7 +47,7 @@ If you do not know these attributes, use a library such as [imagesloaded](https:
 Returns a new instance of `Pack`.
 
 ```js
-var pack = new Pack(container, options)
+var pack = new HorizontalGridPacking(container, options)
 ```
 
 `new` is optional.
@@ -91,7 +90,7 @@ window.addEventListener('resize', function () {
 
 ### pack.destroy()
 
-Destroys the grid and returns the container to the original state.
+Destroys the grid and returns `container` to its original state.
 
 ### pack.create()
 

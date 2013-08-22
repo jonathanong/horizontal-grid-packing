@@ -698,5 +698,5 @@ require.alias("horizontal-grid-packing/lib/pack.js", "horizontal-grid-packing/in
 } else if (typeof define == "function" && define.amd) {
   define(function(){ return require("horizontal-grid-packing"); });
 } else {
-  this["horizontalGridPacking"] = require("horizontal-grid-packing");
+  this["HorizontalGridPacking"] = require("horizontal-grid-packing");
 }})();
