@@ -482,7 +482,10 @@ linear_partition = function(seq, k) {
 };
 
 module.exports = function(seq, k) {
-  while (k >= 0) {
+  if (k <= 0) {
+    return [];
+  }
+  while (k) {
     try {
       return linear_partition(seq, k--);
     } catch (_error) {}
@@ -490,7 +493,7 @@ module.exports = function(seq, k) {
 };
 
 });
-require.register("hor-pack/lib/pack.js", function(exports, require, module){
+require.register("horizontal-grid-packing/lib/pack.js", function(exports, require, module){
 var part = require('linear-partition')
 var classes = require('classes')
 
@@ -508,7 +511,7 @@ function Pack(container, options) {
   this.images = slice(container.childNodes)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
-  this.height = options.height || Math.round(window.innerHeight / 3)
+  this.height = options.height || Math.round(window.innerHeight / Math.PI)
   this.padding = options.padding || 0
 
   this.create()
@@ -550,12 +553,13 @@ Pack.prototype.destroy = function () {
   this.images.forEach(unsetStyle)
   this.mirror = null
 
-  if (!this.isFragment) {
-    var style = this.container.style
-    style.visibility =
-    style.height = ''
-    this.classes.remove('hor-pack')
-  }
+  if (this.isFragment)
+    return
+
+  var style = this.container.style
+  style.visibility =
+  style.height = ''
+  this.classes.remove('hgp')
 }
 
 Pack.prototype.reload = function () {
@@ -583,10 +587,11 @@ Pack.prototype.create = function () {
   if (this.isFragment)
     return
 
-  this.classes.add('hor-pack')
+  this.classes.add('hgp')
 
-  container.style.height = this.totalheight + 'px'
-  container.style.visibility = 'visible'
+  var style = container.style
+  style.height = this.totalheight + 'px'
+  style.visibility = 'visible'
 }
 
 Pack.prototype.createRow = function (index, count) {
@@ -679,12 +684,12 @@ function add(a, b) {
 });
 
 
-require.alias("component-classes/index.js", "hor-pack/deps/classes/index.js");
+require.alias("component-classes/index.js", "horizontal-grid-packing/deps/classes/index.js");
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
 
-require.alias("jonathanong-linear-partition/linear_partition.js", "hor-pack/deps/linear-partition/linear_partition.js");
-require.alias("jonathanong-linear-partition/linear_partition.js", "hor-pack/deps/linear-partition/index.js");
+require.alias("jonathanong-linear-partition/linear_partition.js", "horizontal-grid-packing/deps/linear-partition/linear_partition.js");
+require.alias("jonathanong-linear-partition/linear_partition.js", "horizontal-grid-packing/deps/linear-partition/index.js");
 require.alias("jonathanong-linear-partition/linear_partition.js", "linear-partition/index.js");
 require.alias("jonathanong-linear-partition/linear_partition.js", "jonathanong-linear-partition/index.js");
-require.alias("hor-pack/lib/pack.js", "hor-pack/index.js");
+require.alias("horizontal-grid-packing/lib/pack.js", "horizontal-grid-packing/index.js");
