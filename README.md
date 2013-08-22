@@ -1,11 +1,11 @@
-# Horizontal packing
+# Horizontal grid packing
 
-Packs images into rows so that each row takes up the full width.
+Packs grids into rows so that each row expands to the full container width.
 Row heights are dynamically adjusted.
 Similar to [Masonry](https://github.com/desandro/masonry), but the space taken by all the grids will always be a rectangle without any jagged edges.
 By being horizontal, users view the grid linearly (scan left to right, top to bottom) kind of like a comic book.
 
-Demo: http://jonathanong.github.io/hor-pack/
+Demo: http://jonathanong.github.io/horizontal-grid-packing/
 
 See:
 
@@ -20,8 +20,8 @@ If you use [component](https://github.com/component/component‎), the dependenc
 If you use [bower](https://github.com/bower/bower‎), the dependencies are packaged together.
 
 ```bash
-bower install jonathanong/hor-pack
-component install jonathanong/hor-pack
+bower install jonathanong/horizontal-grid-packing
+component install jonathanong/horizontal-grid-packing
 ```
 
 ## API
@@ -40,7 +40,7 @@ The HTML must strictly be a single container whose children are strictly grid el
 ```
 
 This library assumes you know the aspect ratio of each grid element.
-Each element should either have a `data-aspect-ratio` attribute, `data-width` and `data-height` attributes, or an `.aspectRatio` Javascript attribute.
+Each element should either have a `data-aspect-ratio` attribute or `data-width` and `data-height` attributes.
 If you do not know these attributes, use a library such as [imagesloaded](https://github.com/desandro/imagesloaded) to calculate the dimensions before using this library.
 
 ### Pack(container, options)
@@ -84,16 +84,14 @@ Specifically, you would want to use this when `container` is resized:
 ```js
 window.addEventListener('resize', function () {
   pack.width = container.clientWidth
-  pack.height = Math.round(window.innerHeight / 3)
+  pack.height = Math.round(window.innerHeight / Math.PI)
   pack.reload()
 })
 ```
 
-Note: you may want to debounce this function if you care about performance.
-
 ### pack.destroy()
 
-Destroys the grid.
+Destroys the grid and returns the container to the original state.
 
 ### pack.create()
 
@@ -101,13 +99,12 @@ Creates the grid.
 This is called by default.
 You should only use this if the grid has been previously destroyed.
 
-### pack.append(fragment || elements)
+### pack.append(DocumentFragment || elements)
 
 Append elements to the current grid.
 Could either be a `DocumentFragment` instance whose child nodes are `elements`,
 or an array-like variable of grid `elements`.
 Appends using `DocumentFragment`, so don't worry about reflows.
-You don't need to append the elements yourself like in Masonry.
 
 ## Compatibility
 
