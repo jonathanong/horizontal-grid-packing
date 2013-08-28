@@ -39,10 +39,11 @@ The HTML must strictly be a single container whose children are strictly grid el
 ```
 
 This library assumes you know the aspect ratio of each grid element.
-Each element should either have a `data-aspect-ratio` attribute or both `data-width` and `data-height` attributes.
+Each element should either have a `data-aspect-ratio` attribute (width/height) or both `data-width` and `data-height` attributes.
 If you do not know these attributes, use a library such as [imagesloaded](https://github.com/desandro/imagesloaded) to calculate the dimensions before using this library.
+This library will not attempt to figure out the dimensions of each grid element.
 
-### Pack(container, options)
+### Pack(container [, options])
 
 Returns a new instance of `Pack`.
 
