@@ -543,6 +543,7 @@ Pack.prototype.append = function (images) {
 
   this.totalheight = subpack.totalheight
   this.images = this.images.concat(images)
+  this.mirror = this.mirror.concat(subpack.mirror)
 
   var container = this.container
   container.appendChild(fragment)
