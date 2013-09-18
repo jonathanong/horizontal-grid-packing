@@ -108,7 +108,7 @@ Appends using `DocumentFragment`, so don't worry about reflows.
 
 ## Compatibility
 
-IE9+
+IE9+ (Pull requests welcome for IE8)
 
 ## License
 
