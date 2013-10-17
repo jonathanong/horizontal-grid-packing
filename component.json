@@ -11,7 +11,7 @@
   "main": "lib/pack.js",
   "dependencies": {
     "component/classes": "*",
-    "jonathanong/linear-partition": "*"
+    "math-utils/linear-partition": "*"
   },
   "license": "MIT",
   "repo": "jonathanong/horizontal-grid-packing"

@@ -9,7 +9,7 @@ Demo: http://jonathanong.github.io/horizontal-grid-packing/
 
 See:
 
-- https://github.com/jonathanong/linear-partition
+- https://github.com/math-utils/linear-partition
 - https://news.ycombinator.com/item?id=6198400
 - http://www.crispymtn.com/stories/the-algorithm-for-a-perfectly-balanced-photo-gallery
 
