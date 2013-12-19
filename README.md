@@ -56,7 +56,7 @@ var pack = new HorizontalGridPacking(container, options)
 The `options` are:
 
 - `height` - Target row height in pixels.
-  `Math.round(window.innerHeight / Math.PI)` by default.
+  `Math.round(window.outerHeight / Math.PI)` by default.
 - `padding` - Padding between each grid in pixels.
   `0` by default.
 
@@ -64,7 +64,7 @@ Each of these options can be changed as an attribute of `pack`:
 
 ```js
 // Change the target height
-pack.height = Math.round(window.innerHeight / 5)
+pack.height = Math.round(window.outerHeight / 5)
 // Change the padding
 pack.padding = 5
 // Recalculate the grid
@@ -84,7 +84,7 @@ Specifically, you would want to use this when `container` is resized:
 ```js
 window.addEventListener('resize', function () {
   pack.width = container.clientWidth
-  pack.height = Math.round(window.innerHeight / Math.PI)
+  pack.height = Math.round(window.outerHeight / Math.PI)
   pack.reload()
 })
 ```

@@ -32,7 +32,7 @@ html(lang="en")
       })
       window.addEventListener('resize', function () {
         pack.width = container.clientWidth
-        pack.height = Math.round(window.innerHeight / Math.PI)
+        pack.height = Math.round(window.outerHeight / Math.PI)
         pack.reload()
       })
       function append() {
