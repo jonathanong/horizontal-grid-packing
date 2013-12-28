@@ -13,6 +13,9 @@
     "component/classes": "*",
     "math-utils/linear-partitioning": "*"
   },
+  "development": {
+    "component/raf": "*"
+  },
   "license": "MIT",
   "repo": "jonathanong/horizontal-grid-packing"
 }

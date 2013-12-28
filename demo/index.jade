@@ -23,6 +23,10 @@ html(lang="en")
           data-height = image.height
         )
 
+    style.
+      img {
+        transition: all 0.3s linear;
+      }
     script.
       var Pack = require('horizontal-grid-packing')
       var container = document.querySelector('.horizontal-grid-packing')
@@ -30,11 +34,20 @@ html(lang="en")
       var pack = Pack(container, {
         padding: 5
       })
-      window.addEventListener('resize', function () {
-        pack.width = container.clientWidth
-        pack.height = Math.max(Math.round(window.outerHeight / Math.PI), 120)
-        pack.reload()
+
+      var raf = require('component-raf')
+      var pending = false
+      window.addEventListener('resize', function queue() {
+        if (pending) return
+        pending = true
+        raf(function () {
+          pack.width = container.clientWidth
+          pack.height = Math.max(Math.round(window.outerHeight / Math.PI), 120)
+          pack.reload()
+          pending = false
+        })
       })
+
       function append() {
         var frag = document.createElement('div')
         frag.innerHTML = imagesHTML

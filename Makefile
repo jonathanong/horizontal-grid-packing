@@ -7,8 +7,8 @@ clean:
 	@rm -rf components
 
 component:
-	@component install
-	@component build
+	@component install --dev
+	@component build --dev
 
 dist:
 	@component build \
