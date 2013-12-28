@@ -497,7 +497,7 @@ function Pack(container, options) {
   this.container = container
   this.isFragment = container instanceof DocumentFragment
   this.classes = !this.isFragment && classes(container)
-  this.images = slice(container.childNodes)
+  this.images = slice(container.childNodes).filter(isElement)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
   this.height = options.height || 120
@@ -531,7 +531,7 @@ Pack.prototype.append = function (images) {
   })
 
   this.totalheight = subpack.totalheight
-  this.images = this.images.concat(images)
+  this.images = this.images.concat(images.filter(isElement))
   this.mirror = this.mirror.concat(subpack.mirror)
 
   var container = this.container
@@ -671,6 +671,11 @@ function slice(x) {
 function add(a, b) {
   return a + b
 }
+
+function isElement(el) {
+  return el.nodeType && el.nodeType === Node.ELEMENT_NODE
+}
+
 });
 
 
