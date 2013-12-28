@@ -56,7 +56,7 @@ var pack = new HorizontalGridPacking(container, options)
 The `options` are:
 
 - `height` - Target row height in pixels.
-  `Math.max(Math.round(window.outerHeight / Math.PI), 120)` by default.
+  `120` by default.
 - `padding` - Padding between each grid in pixels.
   `0` by default.
 
