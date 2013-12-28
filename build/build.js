@@ -385,63 +385,63 @@ require.register("math-utils-linear-partitioning/linear-partitioning.js", functi
 
 var partition = function (seq, k) {
 
-  if (k === 0) return [];
-  if (k === 1) return [seq];
+	if (k === 0) return [];
+	if (k === 1) return [seq];
 
-  if (k >= seq.length) {
-    // return the lists of each single element in sequence, plus empty lists for any extra buckets.
-    var repeated =  [];
-    for (var q = 0; q < k - seq.length; ++q) repeated.push([]);
-    return seq.map(function(x) { return [x]; }).concat(repeated);
-  }
+	if (k >= seq.length) {
+		// return the lists of each single element in sequence, plus empty lists for any extra buckets.
+		var repeated =  [];
+		for (var q = 0; q < k - seq.length; ++q) repeated.push([]);
+		return seq.map(function(x) { return [x]; }).concat(repeated);
+	}
 
-  var sequence = seq.slice(0);
-  var dividers = [];
-  var sums = prefix_sums(sequence, k);
-  var conds = boundary_conditions(sequence, k, sums);
+	var sequence = seq.slice(0);
+	var dividers = [];
+	var sums = prefix_sums(sequence, k);
+	var conds = boundary_conditions(sequence, k, sums);
 
-  // evaluate main recurrence
-  for(var i = 2; i <= sequence.length; ++i) {
-    for(var j = 2; j <= k; ++j) {
+	// evaluate main recurrence
+	for(var i = 2; i <= sequence.length; ++i) {
+		for(var j = 2; j <= k; ++j) {
 
-      conds[i][j] = undefined;
+			conds[i][j] = undefined;
 
-      for(var x = 1; x < i; ++x) {
+			for(var x = 1; x < i; ++x) {
 
-        var s = Math.max(conds[x][j-1], sums[i] - sums[x]);
-        dividers[i] = dividers[i] || []; // Initialize a new row in the dividers matrix (unless it's already initialized).
+				var s = Math.max(conds[x][j-1], sums[i] - sums[x]);
+				dividers[i] = dividers[i] || []; // Initialize a new row in the dividers matrix (unless it's already initialized).
 
-        // Continue to find the cost of the largest range in the optimal partition.
-        if (conds[i][j] === undefined || conds[i][j] > s) {
-          conds[i][j] = s;
-          dividers[i][j] = x;
-        }
+				// Continue to find the cost of the largest range in the optimal partition.
+				if (conds[i][j] === undefined || conds[i][j] > s) {
+					conds[i][j] = s;
+					dividers[i][j] = x;
+				}
 
-      }
-    }
-  }
+			}
+		}
+	}
 
-  return(reconstruct_partition(sequence, dividers, k));
+	return(reconstruct_partition(sequence, dividers, k));
 };
 
 /* Work our way back up through the dividers, referencing each divider that we
  * saved given a value for k and a length of seq, using each divider to make
  * the partitions. */
 var reconstruct_partition = function(seq, dividers, k) {
-  var partitions = [];
+	var partitions = [];
 
-  while (k > 1) {
-    if (dividers[seq.length]) {
-      var divider = dividers[seq.length][k];
-      var part = seq.splice(divider);
-      partitions.unshift(part);
-    }
-    --k;
-  }
+	while (k > 1) {
+		if (dividers[seq.length]) { 
+			var divider = dividers[seq.length][k];
+			var part = seq.splice(divider);
+			partitions.unshift(part);
+		}
+		--k;
+	}
 
-  partitions.unshift(seq);
+	partitions.unshift(seq);
 
-  return partitions;
+	return partitions;
 };
 
 /*
@@ -452,30 +452,30 @@ The prefix sums are [1,3,6,10,15]
 */
 var prefix_sums = function(seq, k) {
 
-  var sums = [0];
+	var sums = [0];
 
-  for(var i = 1; i <= seq.length; ++i) {
-    sums[i] = sums[i - 1] + seq[i - 1];
-  }
+	for(var i = 1; i <= seq.length; ++i) {
+		sums[i] = sums[i - 1] + seq[i - 1];
+	}
 
-  return sums;
+	return sums;
 };
 
 /* This matrix holds the maximum sums over all the ranges given the length of
  * seq and the number of buckets (k) */
 var boundary_conditions = function(seq, k, sums) {
-  var conds = [];
+	var conds = [];
 
-  for(var i = 1; i <= seq.length; ++i) {
-    conds[i] = [];
-    conds[i][1] = sums[i];
-  }
+	for(var i = 1; i <= seq.length; ++i) {
+		conds[i] = [];
+		conds[i][1] = sums[i];
+	}
 
-  for(var j = 1; j <= k; ++j) {
-    conds[1][j] = seq[0];
-  }
+	for(var j = 1; j <= k; ++j) {
+		conds[1][j] = seq[0];
+	}
 
-  return conds;
+	return conds;
 };
 
 module.exports = partition;
@@ -499,7 +499,8 @@ function Pack(container, options) {
   this.images = slice(container.childNodes)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
-  this.height = options.height || Math.round(window.outerHeight / Math.PI)
+  this.height = options.height
+    || Math.max(Math.round(window.outerHeight / Math.PI), 120)
   this.padding = options.padding || 0
 
   this.create()
