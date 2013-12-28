@@ -199,479 +199,522 @@ require.relative = function(parent) {
 
   return localRequire;
 };
-require.register("component-indexof/index.js", function(exports, require, module){
-module.exports = function(arr, obj){
-  if (arr.indexOf) return arr.indexOf(obj);
-  for (var i = 0; i < arr.length; ++i) {
-    if (arr[i] === obj) return i;
-  }
-  return -1;
-};
-});
-require.register("component-classes/index.js", function(exports, require, module){
-/**
- * Module dependencies.
- */
+require.register("component-indexof/index.js", Function("exports, require, module",
+"module.exports = function(arr, obj){\n\
+  if (arr.indexOf) return arr.indexOf(obj);\n\
+  for (var i = 0; i < arr.length; ++i) {\n\
+    if (arr[i] === obj) return i;\n\
+  }\n\
+  return -1;\n\
+};//@ sourceURL=component-indexof/index.js"
+));
+require.register("component-classes/index.js", Function("exports, require, module",
+"/**\n\
+ * Module dependencies.\n\
+ */\n\
+\n\
+var index = require('indexof');\n\
+\n\
+/**\n\
+ * Whitespace regexp.\n\
+ */\n\
+\n\
+var re = /\\s+/;\n\
+\n\
+/**\n\
+ * toString reference.\n\
+ */\n\
+\n\
+var toString = Object.prototype.toString;\n\
+\n\
+/**\n\
+ * Wrap `el` in a `ClassList`.\n\
+ *\n\
+ * @param {Element} el\n\
+ * @return {ClassList}\n\
+ * @api public\n\
+ */\n\
+\n\
+module.exports = function(el){\n\
+  return new ClassList(el);\n\
+};\n\
+\n\
+/**\n\
+ * Initialize a new ClassList for `el`.\n\
+ *\n\
+ * @param {Element} el\n\
+ * @api private\n\
+ */\n\
+\n\
+function ClassList(el) {\n\
+  if (!el) throw new Error('A DOM element reference is required');\n\
+  this.el = el;\n\
+  this.list = el.classList;\n\
+}\n\
+\n\
+/**\n\
+ * Add class `name` if not already present.\n\
+ *\n\
+ * @param {String} name\n\
+ * @return {ClassList}\n\
+ * @api public\n\
+ */\n\
+\n\
+ClassList.prototype.add = function(name){\n\
+  // classList\n\
+  if (this.list) {\n\
+    this.list.add(name);\n\
+    return this;\n\
+  }\n\
+\n\
+  // fallback\n\
+  var arr = this.array();\n\
+  var i = index(arr, name);\n\
+  if (!~i) arr.push(name);\n\
+  this.el.className = arr.join(' ');\n\
+  return this;\n\
+};\n\
+\n\
+/**\n\
+ * Remove class `name` when present, or\n\
+ * pass a regular expression to remove\n\
+ * any which match.\n\
+ *\n\
+ * @param {String|RegExp} name\n\
+ * @return {ClassList}\n\
+ * @api public\n\
+ */\n\
+\n\
+ClassList.prototype.remove = function(name){\n\
+  if ('[object RegExp]' == toString.call(name)) {\n\
+    return this.removeMatching(name);\n\
+  }\n\
+\n\
+  // classList\n\
+  if (this.list) {\n\
+    this.list.remove(name);\n\
+    return this;\n\
+  }\n\
+\n\
+  // fallback\n\
+  var arr = this.array();\n\
+  var i = index(arr, name);\n\
+  if (~i) arr.splice(i, 1);\n\
+  this.el.className = arr.join(' ');\n\
+  return this;\n\
+};\n\
+\n\
+/**\n\
+ * Remove all classes matching `re`.\n\
+ *\n\
+ * @param {RegExp} re\n\
+ * @return {ClassList}\n\
+ * @api private\n\
+ */\n\
+\n\
+ClassList.prototype.removeMatching = function(re){\n\
+  var arr = this.array();\n\
+  for (var i = 0; i < arr.length; i++) {\n\
+    if (re.test(arr[i])) {\n\
+      this.remove(arr[i]);\n\
+    }\n\
+  }\n\
+  return this;\n\
+};\n\
+\n\
+/**\n\
+ * Toggle class `name`.\n\
+ *\n\
+ * @param {String} name\n\
+ * @return {ClassList}\n\
+ * @api public\n\
+ */\n\
+\n\
+ClassList.prototype.toggle = function(name){\n\
+  // classList\n\
+  if (this.list) {\n\
+    this.list.toggle(name);\n\
+    return this;\n\
+  }\n\
+\n\
+  // fallback\n\
+  if (this.has(name)) {\n\
+    this.remove(name);\n\
+  } else {\n\
+    this.add(name);\n\
+  }\n\
+  return this;\n\
+};\n\
+\n\
+/**\n\
+ * Return an array of classes.\n\
+ *\n\
+ * @return {Array}\n\
+ * @api public\n\
+ */\n\
+\n\
+ClassList.prototype.array = function(){\n\
+  var str = this.el.className.replace(/^\\s+|\\s+$/g, '');\n\
+  var arr = str.split(re);\n\
+  if ('' === arr[0]) arr.shift();\n\
+  return arr;\n\
+};\n\
+\n\
+/**\n\
+ * Check if class `name` is present.\n\
+ *\n\
+ * @param {String} name\n\
+ * @return {ClassList}\n\
+ * @api public\n\
+ */\n\
+\n\
+ClassList.prototype.has =\n\
+ClassList.prototype.contains = function(name){\n\
+  return this.list\n\
+    ? this.list.contains(name)\n\
+    : !! ~index(this.array(), name);\n\
+};\n\
+//@ sourceURL=component-classes/index.js"
+));
+require.register("math-utils-linear-partitioning/linear-partitioning.js", Function("exports, require, module",
+"\n\
+// Explanation: http://www8.cs.umu.se/kurser/TDBAfl/VT06/algorithms/BOOK/BOOK2/NODE45.HTM\n\
+\n\
+// Partition seq into k buckets\n\
+\n\
+\n\
+var partition = function (seq, k) {\n\
+\n\
+\tif (k === 0) return [];\n\
+\tif (k === 1) return [seq];\n\
+\n\
+\tif (k >= seq.length) {\n\
+\t\t// return the lists of each single element in sequence, plus empty lists for any extra buckets.\n\
+\t\tvar repeated =  [];\n\
+\t\tfor (var q = 0; q < k - seq.length; ++q) repeated.push([]);\n\
+\t\treturn seq.map(function(x) { return [x]; }).concat(repeated);\n\
+\t}\n\
+\n\
+\tvar sequence = seq.slice(0);\n\
+\tvar dividers = [];\n\
+\tvar sums = prefix_sums(sequence, k);\n\
+\tvar conds = boundary_conditions(sequence, k, sums);\n\
+\n\
+\t// evaluate main recurrence\n\
+\tfor(var i = 2; i <= sequence.length; ++i) {\n\
+\t\tfor(var j = 2; j <= k; ++j) {\n\
+\n\
+\t\t\tconds[i][j] = undefined;\n\
+\n\
+\t\t\tfor(var x = 1; x < i; ++x) {\n\
+\n\
+\t\t\t\tvar s = Math.max(conds[x][j-1], sums[i] - sums[x]);\n\
+\t\t\t\tdividers[i] = dividers[i] || []; // Initialize a new row in the dividers matrix (unless it's already initialized).\n\
+\n\
+\t\t\t\t// Continue to find the cost of the largest range in the optimal partition.\n\
+\t\t\t\tif (conds[i][j] === undefined || conds[i][j] > s) {\n\
+\t\t\t\t\tconds[i][j] = s;\n\
+\t\t\t\t\tdividers[i][j] = x;\n\
+\t\t\t\t}\n\
+\n\
+\t\t\t}\n\
+\t\t}\n\
+\t}\n\
+\n\
+\treturn(reconstruct_partition(sequence, dividers, k));\n\
+};\n\
+\n\
+/* Work our way back up through the dividers, referencing each divider that we\n\
+ * saved given a value for k and a length of seq, using each divider to make\n\
+ * the partitions. */\n\
+var reconstruct_partition = function(seq, dividers, k) {\n\
+\tvar partitions = [];\n\
+\n\
+\twhile (k > 1) {\n\
+\t\tif (dividers[seq.length]) { \n\
+\t\t\tvar divider = dividers[seq.length][k];\n\
+\t\t\tvar part = seq.splice(divider);\n\
+\t\t\tpartitions.unshift(part);\n\
+\t\t}\n\
+\t\t--k;\n\
+\t}\n\
+\n\
+\tpartitions.unshift(seq);\n\
+\n\
+\treturn partitions;\n\
+};\n\
+\n\
+/*\n\
+Given a list of numbers of length n, loop through it with index 'i'\n\
+Make each element the sum of all the numbers from 0...i\n\
+For example, given [1,2,3,4,5]\n\
+The prefix sums are [1,3,6,10,15]\n\
+*/\n\
+var prefix_sums = function(seq, k) {\n\
+\n\
+\tvar sums = [0];\n\
+\n\
+\tfor(var i = 1; i <= seq.length; ++i) {\n\
+\t\tsums[i] = sums[i - 1] + seq[i - 1];\n\
+\t}\n\
+\n\
+\treturn sums;\n\
+};\n\
+\n\
+/* This matrix holds the maximum sums over all the ranges given the length of\n\
+ * seq and the number of buckets (k) */\n\
+var boundary_conditions = function(seq, k, sums) {\n\
+\tvar conds = [];\n\
+\n\
+\tfor(var i = 1; i <= seq.length; ++i) {\n\
+\t\tconds[i] = [];\n\
+\t\tconds[i][1] = sums[i];\n\
+\t}\n\
+\n\
+\tfor(var j = 1; j <= k; ++j) {\n\
+\t\tconds[1][j] = seq[0];\n\
+\t}\n\
+\n\
+\treturn conds;\n\
+};\n\
+\n\
+module.exports = partition;\n\
+//@ sourceURL=math-utils-linear-partitioning/linear-partitioning.js"
+));
+require.register("component-raf/index.js", Function("exports, require, module",
+"/**\n\
+ * Expose `requestAnimationFrame()`.\n\
+ */\n\
+\n\
+exports = module.exports = window.requestAnimationFrame\n\
+  || window.webkitRequestAnimationFrame\n\
+  || window.mozRequestAnimationFrame\n\
+  || window.oRequestAnimationFrame\n\
+  || window.msRequestAnimationFrame\n\
+  || fallback;\n\
+\n\
+/**\n\
+ * Fallback implementation.\n\
+ */\n\
+\n\
+var prev = new Date().getTime();\n\
+function fallback(fn) {\n\
+  var curr = new Date().getTime();\n\
+  var ms = Math.max(0, 16 - (curr - prev));\n\
+  var req = setTimeout(fn, ms);\n\
+  prev = curr;\n\
+  return req;\n\
+}\n\
+\n\
+/**\n\
+ * Cancel.\n\
+ */\n\
+\n\
+var cancel = window.cancelAnimationFrame\n\
+  || window.webkitCancelAnimationFrame\n\
+  || window.mozCancelAnimationFrame\n\
+  || window.oCancelAnimationFrame\n\
+  || window.msCancelAnimationFrame\n\
+  || window.clearTimeout;\n\
+\n\
+exports.cancel = function(id){\n\
+  cancel.call(window, id);\n\
+};\n\
+//@ sourceURL=component-raf/index.js"
+));
+require.register("horizontal-grid-packing/lib/pack.js", Function("exports, require, module",
+"var part = require('linear-partitioning')\n\
+var classes = require('classes')\n\
+\n\
+module.exports = Pack\n\
+\n\
+function Pack(container, options) {\n\
+  if (!(this instanceof Pack))\n\
+    return new Pack(container, options)\n\
+\n\
+  options = options || {}\n\
+\n\
+  this.container = container\n\
+  this.isFragment = container instanceof DocumentFragment\n\
+  this.classes = !this.isFragment && classes(container)\n\
+  this.images = slice(container.childNodes)\n\
+  this.top = options.top || 0\n\
+  this.width = options.width || container.clientWidth\n\
+  this.height = options.height\n\
+    || Math.max(Math.round(window.outerHeight / Math.PI), 120)\n\
+  this.padding = options.padding || 0\n\
+\n\
+  this.create()\n\
+}\n\
+\n\
+Pack.prototype.append = function (images) {\n\
+  var fragment\n\
+\n\
+  if (images instanceof DocumentFragment) {\n\
+    fragment = images\n\
+    images = slice(fragment.childNodes)\n\
+  } else {\n\
+    fragment = document.createDocumentFragment()\n\
+    images = slice(images)\n\
+    images.forEach(function (image) {\n\
+      if (image.parentNode)\n\
+        image.parentNode.removeChild(image)\n\
+\n\
+      fragment.appendChild(image)\n\
+    })\n\
+  }\n\
+\n\
+  var subpack = new Pack(fragment, {\n\
+    top: this.totalheight + this.padding,\n\
+    width: this.width,\n\
+    height: this.height,\n\
+    padding: this.padding\n\
+  })\n\
+\n\
+  this.totalheight = subpack.totalheight\n\
+  this.images = this.images.concat(images)\n\
+  this.mirror = this.mirror.concat(subpack.mirror)\n\
+\n\
+  var container = this.container\n\
+  container.appendChild(fragment)\n\
+  container.style.height = this.totalheight + 'px'\n\
+}\n\
+\n\
+Pack.prototype.destroy = function () {\n\
+  this.images.forEach(unsetStyle)\n\
+  this.mirror = null\n\
+\n\
+  if (this.isFragment)\n\
+    return\n\
+\n\
+  var style = this.container.style\n\
+  style.visibility =\n\
+  style.height = ''\n\
+  this.classes.remove('hgp')\n\
+}\n\
+\n\
+Pack.prototype.reload = function () {\n\
+  this.container.style.visibility = 'hidden'\n\
+  this.create()\n\
+}\n\
+\n\
+Pack.prototype.create = function () {\n\
+  var index = 0\n\
+  var ratios = this.calculateAspectRatios()\n\
+  var container = this.container\n\
+  var mirrors = this.mirror = []\n\
+\n\
+  part(ratios, Math.max(Math.min(\n\
+    Math.floor(ratios.reduce(add, 0) * this.height / this.width),\n\
+    ratios.length\n\
+  ), 1)).forEach(function (x) {\n\
+    index += this.createRow(index, x.length)\n\
+  }, this)\n\
+\n\
+  var lastmirror = mirrors[mirrors.length - 1]\n\
+  this.totalheight = lastmirror.top + lastmirror.height\n\
+  this.images.forEach(positionAbsolute)\n\
+\n\
+  if (this.isFragment)\n\
+    return\n\
+\n\
+  this.classes.add('hgp')\n\
+\n\
+  var style = container.style\n\
+  style.height = this.totalheight + 'px'\n\
+  style.visibility = 'visible'\n\
+}\n\
+\n\
+Pack.prototype.createRow = function (index, count) {\n\
+  var mirror = this.mirror\n\
+  var padding = this.padding\n\
+  var images = this.images.slice(index, index + count)\n\
+  var height = this.calculateRowHeight(images)\n\
+\n\
+  var row = {\n\
+    index: index,\n\
+    count: count,\n\
+    height: height\n\
+  }\n\
+\n\
+  var imagemirrors = row.images = []\n\
+  var lastrow = mirror[mirror.length - 1]\n\
+  var top = row.top = lastrow\n\
+    ? (lastrow.top + lastrow.height + padding)\n\
+    : (this.top || 0)\n\
+\n\
+  images.forEach(function (image, i) {\n\
+    var lastimage = i && imagemirrors[i - 1]\n\
+    var left = lastimage\n\
+      ? lastimage.right + padding\n\
+      : 0\n\
+    var width = Math.round(height * image.aspectRatio)\n\
+\n\
+    var style = image.style\n\
+    style.left = left + 'px'\n\
+    style.top = top + 'px'\n\
+    style.height = height + 'px'\n\
+    style.width = width + 'px'\n\
+\n\
+    imagemirrors.push({\n\
+      left: left,\n\
+      width: width,\n\
+      right: left + width,\n\
+      image: image\n\
+    })\n\
+  })\n\
+\n\
+  mirror.push(row)\n\
+\n\
+  return count\n\
+}\n\
+\n\
+Pack.prototype.calculateRowHeight = function (images) {\n\
+  return Math.ceil(\n\
+    (this.width - (this.padding * (images.length - 1))) /\n\
+    images.map(getAspectRatio).reduce(add, 0)\n\
+  )\n\
+}\n\
+\n\
+Pack.prototype.calculateAspectRatios = function () {\n\
+  return this.images.map(calculateAspectRatio)\n\
+}\n\
+\n\
+function positionAbsolute(image) {\n\
+  image.style.position = 'absolute'\n\
+}\n\
+\n\
+function unsetStyle(image) {\n\
+  var style = image.style\n\
+  style.width =\n\
+  style.height =\n\
+  style.top =\n\
+  style.left =\n\
+  style.position = ''\n\
+}\n\
+\n\
+function calculateAspectRatio(image) {\n\
+  return image.aspectRatio || (image.aspectRatio =\n\
+    parseFloat(image.getAttribute('data-aspect-ratio')) ||\n\
+    parseInt(image.getAttribute('data-width'), 10) /\n\
+    parseInt(image.getAttribute('data-height'), 10)\n\
+  )\n\
+}\n\
+\n\
+function getAspectRatio(x) {\n\
+  return x.aspectRatio\n\
+}\n\
+\n\
+function slice(x) {\n\
+  return [].slice.call(x, 0)\n\
+}\n\
+\n\
+function add(a, b) {\n\
+  return a + b\n\
+}//@ sourceURL=horizontal-grid-packing/lib/pack.js"
+));
 
-var index = require('indexof');
 
-/**
- * Whitespace regexp.
- */
-
-var re = /\s+/;
-
-/**
- * toString reference.
- */
-
-var toString = Object.prototype.toString;
-
-/**
- * Wrap `el` in a `ClassList`.
- *
- * @param {Element} el
- * @return {ClassList}
- * @api public
- */
-
-module.exports = function(el){
-  return new ClassList(el);
-};
-
-/**
- * Initialize a new ClassList for `el`.
- *
- * @param {Element} el
- * @api private
- */
-
-function ClassList(el) {
-  if (!el) throw new Error('A DOM element reference is required');
-  this.el = el;
-  this.list = el.classList;
-}
-
-/**
- * Add class `name` if not already present.
- *
- * @param {String} name
- * @return {ClassList}
- * @api public
- */
-
-ClassList.prototype.add = function(name){
-  // classList
-  if (this.list) {
-    this.list.add(name);
-    return this;
-  }
-
-  // fallback
-  var arr = this.array();
-  var i = index(arr, name);
-  if (!~i) arr.push(name);
-  this.el.className = arr.join(' ');
-  return this;
-};
-
-/**
- * Remove class `name` when present, or
- * pass a regular expression to remove
- * any which match.
- *
- * @param {String|RegExp} name
- * @return {ClassList}
- * @api public
- */
-
-ClassList.prototype.remove = function(name){
-  if ('[object RegExp]' == toString.call(name)) {
-    return this.removeMatching(name);
-  }
-
-  // classList
-  if (this.list) {
-    this.list.remove(name);
-    return this;
-  }
-
-  // fallback
-  var arr = this.array();
-  var i = index(arr, name);
-  if (~i) arr.splice(i, 1);
-  this.el.className = arr.join(' ');
-  return this;
-};
-
-/**
- * Remove all classes matching `re`.
- *
- * @param {RegExp} re
- * @return {ClassList}
- * @api private
- */
-
-ClassList.prototype.removeMatching = function(re){
-  var arr = this.array();
-  for (var i = 0; i < arr.length; i++) {
-    if (re.test(arr[i])) {
-      this.remove(arr[i]);
-    }
-  }
-  return this;
-};
-
-/**
- * Toggle class `name`.
- *
- * @param {String} name
- * @return {ClassList}
- * @api public
- */
-
-ClassList.prototype.toggle = function(name){
-  // classList
-  if (this.list) {
-    this.list.toggle(name);
-    return this;
-  }
-
-  // fallback
-  if (this.has(name)) {
-    this.remove(name);
-  } else {
-    this.add(name);
-  }
-  return this;
-};
-
-/**
- * Return an array of classes.
- *
- * @return {Array}
- * @api public
- */
-
-ClassList.prototype.array = function(){
-  var str = this.el.className.replace(/^\s+|\s+$/g, '');
-  var arr = str.split(re);
-  if ('' === arr[0]) arr.shift();
-  return arr;
-};
-
-/**
- * Check if class `name` is present.
- *
- * @param {String} name
- * @return {ClassList}
- * @api public
- */
-
-ClassList.prototype.has =
-ClassList.prototype.contains = function(name){
-  return this.list
-    ? this.list.contains(name)
-    : !! ~index(this.array(), name);
-};
-
-});
-require.register("math-utils-linear-partitioning/linear-partitioning.js", function(exports, require, module){
-
-// Explanation: http://www8.cs.umu.se/kurser/TDBAfl/VT06/algorithms/BOOK/BOOK2/NODE45.HTM
-
-// Partition seq into k buckets
-
-
-var partition = function (seq, k) {
-
-	if (k === 0) return [];
-	if (k === 1) return [seq];
-
-	if (k >= seq.length) {
-		// return the lists of each single element in sequence, plus empty lists for any extra buckets.
-		var repeated =  [];
-		for (var q = 0; q < k - seq.length; ++q) repeated.push([]);
-		return seq.map(function(x) { return [x]; }).concat(repeated);
-	}
-
-	var sequence = seq.slice(0);
-	var dividers = [];
-	var sums = prefix_sums(sequence, k);
-	var conds = boundary_conditions(sequence, k, sums);
-
-	// evaluate main recurrence
-	for(var i = 2; i <= sequence.length; ++i) {
-		for(var j = 2; j <= k; ++j) {
-
-			conds[i][j] = undefined;
-
-			for(var x = 1; x < i; ++x) {
-
-				var s = Math.max(conds[x][j-1], sums[i] - sums[x]);
-				dividers[i] = dividers[i] || []; // Initialize a new row in the dividers matrix (unless it's already initialized).
-
-				// Continue to find the cost of the largest range in the optimal partition.
-				if (conds[i][j] === undefined || conds[i][j] > s) {
-					conds[i][j] = s;
-					dividers[i][j] = x;
-				}
-
-			}
-		}
-	}
-
-	return(reconstruct_partition(sequence, dividers, k));
-};
-
-/* Work our way back up through the dividers, referencing each divider that we
- * saved given a value for k and a length of seq, using each divider to make
- * the partitions. */
-var reconstruct_partition = function(seq, dividers, k) {
-	var partitions = [];
-
-	while (k > 1) {
-		if (dividers[seq.length]) { 
-			var divider = dividers[seq.length][k];
-			var part = seq.splice(divider);
-			partitions.unshift(part);
-		}
-		--k;
-	}
-
-	partitions.unshift(seq);
-
-	return partitions;
-};
-
-/*
-Given a list of numbers of length n, loop through it with index 'i'
-Make each element the sum of all the numbers from 0...i
-For example, given [1,2,3,4,5]
-The prefix sums are [1,3,6,10,15]
-*/
-var prefix_sums = function(seq, k) {
-
-	var sums = [0];
-
-	for(var i = 1; i <= seq.length; ++i) {
-		sums[i] = sums[i - 1] + seq[i - 1];
-	}
-
-	return sums;
-};
-
-/* This matrix holds the maximum sums over all the ranges given the length of
- * seq and the number of buckets (k) */
-var boundary_conditions = function(seq, k, sums) {
-	var conds = [];
-
-	for(var i = 1; i <= seq.length; ++i) {
-		conds[i] = [];
-		conds[i][1] = sums[i];
-	}
-
-	for(var j = 1; j <= k; ++j) {
-		conds[1][j] = seq[0];
-	}
-
-	return conds;
-};
-
-module.exports = partition;
-
-});
-require.register("horizontal-grid-packing/lib/pack.js", function(exports, require, module){
-var part = require('linear-partitioning')
-var classes = require('classes')
-
-module.exports = Pack
-
-function Pack(container, options) {
-  if (!(this instanceof Pack))
-    return new Pack(container, options)
-
-  options = options || {}
-
-  this.container = container
-  this.isFragment = container instanceof DocumentFragment
-  this.classes = !this.isFragment && classes(container)
-  this.images = slice(container.childNodes)
-  this.top = options.top || 0
-  this.width = options.width || container.clientWidth
-  this.height = options.height
-    || Math.max(Math.round(window.outerHeight / Math.PI), 120)
-  this.padding = options.padding || 0
-
-  this.create()
-}
-
-Pack.prototype.append = function (images) {
-  var fragment
-
-  if (images instanceof DocumentFragment) {
-    fragment = images
-    images = slice(fragment.childNodes)
-  } else {
-    fragment = document.createDocumentFragment()
-    images = slice(images)
-    images.forEach(function (image) {
-      if (image.parentNode)
-        image.parentNode.removeChild(image)
-
-      fragment.appendChild(image)
-    })
-  }
-
-  var subpack = new Pack(fragment, {
-    top: this.totalheight + this.padding,
-    width: this.width,
-    height: this.height,
-    padding: this.padding
-  })
-
-  this.totalheight = subpack.totalheight
-  this.images = this.images.concat(images)
-  this.mirror = this.mirror.concat(subpack.mirror)
-
-  var container = this.container
-  container.appendChild(fragment)
-  container.style.height = this.totalheight + 'px'
-}
-
-Pack.prototype.destroy = function () {
-  this.images.forEach(unsetStyle)
-  this.mirror = null
-
-  if (this.isFragment)
-    return
-
-  var style = this.container.style
-  style.visibility =
-  style.height = ''
-  this.classes.remove('hgp')
-}
-
-Pack.prototype.reload = function () {
-  this.container.style.visibility = 'hidden'
-  this.create()
-}
-
-Pack.prototype.create = function () {
-  var index = 0
-  var ratios = this.calculateAspectRatios()
-  var container = this.container
-  var mirrors = this.mirror = []
-
-  part(ratios, Math.max(Math.min(
-    Math.floor(ratios.reduce(add, 0) * this.height / this.width),
-    ratios.length
-  ), 1)).forEach(function (x) {
-    index += this.createRow(index, x.length)
-  }, this)
-
-  var lastmirror = mirrors[mirrors.length - 1]
-  this.totalheight = lastmirror.top + lastmirror.height
-  this.images.forEach(positionAbsolute)
-
-  if (this.isFragment)
-    return
-
-  this.classes.add('hgp')
-
-  var style = container.style
-  style.height = this.totalheight + 'px'
-  style.visibility = 'visible'
-}
-
-Pack.prototype.createRow = function (index, count) {
-  var mirror = this.mirror
-  var padding = this.padding
-  var images = this.images.slice(index, index + count)
-  var height = this.calculateRowHeight(images)
-
-  var row = {
-    index: index,
-    count: count,
-    height: height
-  }
-
-  var imagemirrors = row.images = []
-  var lastrow = mirror[mirror.length - 1]
-  var top = row.top = lastrow
-    ? (lastrow.top + lastrow.height + padding)
-    : (this.top || 0)
-
-  images.forEach(function (image, i) {
-    var lastimage = i && imagemirrors[i - 1]
-    var left = lastimage
-      ? lastimage.right + padding
-      : 0
-    var width = Math.round(height * image.aspectRatio)
-
-    var style = image.style
-    style.left = left + 'px'
-    style.top = top + 'px'
-    style.height = height + 'px'
-    style.width = width + 'px'
-
-    imagemirrors.push({
-      left: left,
-      width: width,
-      right: left + width,
-      image: image
-    })
-  })
-
-  mirror.push(row)
-
-  return count
-}
-
-Pack.prototype.calculateRowHeight = function (images) {
-  return Math.ceil(
-    (this.width - (this.padding * (images.length - 1))) /
-    images.map(getAspectRatio).reduce(add, 0)
-  )
-}
-
-Pack.prototype.calculateAspectRatios = function () {
-  return this.images.map(calculateAspectRatio)
-}
-
-function positionAbsolute(image) {
-  image.style.position = 'absolute'
-}
-
-function unsetStyle(image) {
-  var style = image.style
-  style.width =
-  style.height =
-  style.top =
-  style.left =
-  style.position = ''
-}
-
-function calculateAspectRatio(image) {
-  return image.aspectRatio || (image.aspectRatio =
-    parseFloat(image.getAttribute('data-aspect-ratio')) ||
-    parseInt(image.getAttribute('data-width'), 10) /
-    parseInt(image.getAttribute('data-height'), 10)
-  )
-}
-
-function getAspectRatio(x) {
-  return x.aspectRatio
-}
-
-function slice(x) {
-  return [].slice.call(x, 0)
-}
-
-function add(a, b) {
-  return a + b
-}
-});
 
 
 
@@ -684,4 +727,7 @@ require.alias("math-utils-linear-partitioning/linear-partitioning.js", "horizont
 require.alias("math-utils-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/index.js");
 require.alias("math-utils-linear-partitioning/linear-partitioning.js", "linear-partitioning/index.js");
 require.alias("math-utils-linear-partitioning/linear-partitioning.js", "math-utils-linear-partitioning/index.js");
+require.alias("component-raf/index.js", "horizontal-grid-packing/deps/raf/index.js");
+require.alias("component-raf/index.js", "raf/index.js");
+
 require.alias("horizontal-grid-packing/lib/pack.js", "horizontal-grid-packing/index.js");
