@@ -500,7 +500,8 @@ function Pack(container, options) {
   this.images = slice(container.childNodes)
   this.top = options.top || 0
   this.width = options.width || container.clientWidth
-  this.height = options.height || Math.round(window.outerHeight / Math.PI)
+  this.height = options.height
+    || Math.max(Math.round(window.outerHeight / Math.PI), 120)
   this.padding = options.padding || 0
 
   this.create()
