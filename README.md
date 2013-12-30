@@ -15,8 +15,8 @@ See:
 
 ## Install
 
-If you use [component](https://github.com/component/component‎), the dependencies are handled for you.
-If you use [bower](https://github.com/bower/bower‎), the dependencies are packaged together.
+If you use [component](https://github.com/component/component), the dependencies are handled for you.
+If you use [bower](https://github.com/bower/bower), the dependencies are packaged together.
 
 ```bash
 component install jonathanong/horizontal-grid-packing
