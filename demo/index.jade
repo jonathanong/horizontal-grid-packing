@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
   head
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title Example
+    title Horizontal Grid Packing Example
     style.
       html,
       body {
@@ -12,6 +12,10 @@ html(lang="en")
 
       div {
         margin: 5px;
+      }
+
+      img {
+        transition: all 0.3s linear;
       }
     link(rel="stylesheet", href="./build/build.css")
     script(src='./build/build.js')
@@ -24,33 +28,36 @@ html(lang="en")
           data-height = image.height
         )
 
-    style.
-      img {
-        transition: all 0.3s linear;
-      }
     script.
       var Pack = require('horizontal-grid-packing')
       var container = document.querySelector('.horizontal-grid-packing')
       var imagesHTML = container.innerHTML
       var pack = Pack(container, {
+        height: height(),
         padding: 5
       })
 
       var raf = require('component-raf')
       var pending = false
-      window.addEventListener('resize', function queue() {
+      window.addEventListener('resize', function () {
         if (pending) return
         pending = true
-        raf(function () {
-          pack.width = container.clientWidth
-          pack.height = Math.max(Math.round(window.outerHeight / Math.PI), 120)
-          pack.reload()
-          pending = false
-        })
+        raf(reload)
       })
+
+      function reload() {
+        pack.width = container.clientWidth
+        pack.height = height()
+        pack.reload()
+        pending = false
+      }
 
       function append() {
         var frag = document.createElement('div')
         frag.innerHTML = imagesHTML
         pack.append(frag.children)
+      }
+
+      function height() {
+        return Math.max(Math.round(window.outerHeight / Math.PI), 120)
       }

@@ -27,14 +27,10 @@ function require(path, parent, orig) {
   // perform real require()
   // by invoking the module's
   // registered function
-  if (!module._resolving && !module.exports) {
-    var mod = {};
-    mod.exports = {};
-    mod.client = mod.component = true;
-    module._resolving = true;
-    module.call(this, mod.exports, require.relative(resolved), mod);
-    delete module._resolving;
-    module.exports = mod.exports;
+  if (!module.exports) {
+    module.exports = {};
+    module.client = module.component = true;
+    module.call(this, module.exports, require.relative(resolved), module);
   }
 
   return module.exports;
@@ -677,8 +673,6 @@ function isElement(el) {
 }
 
 });
-
-
 
 
 require.alias("component-classes/index.js", "horizontal-grid-packing/deps/classes/index.js");
