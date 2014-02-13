@@ -11,7 +11,7 @@
   "main": "lib/pack.js",
   "dependencies": {
     "component/classes": "*",
-    "math-utils/linear-partitioning": "*"
+    "the-swerve/linear-partitioning": "*"
   },
   "development": {
     "component/raf": "*"

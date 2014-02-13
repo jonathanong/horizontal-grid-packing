@@ -320,26 +320,45 @@ ClassList.prototype.removeMatching = function(re){
 };
 
 /**
- * Toggle class `name`.
+ * Toggle class `name`, can force state via `force`.
+ *
+ * For browsers that support classList, but do not support `force` yet,
+ * the mistake will be detected and corrected.
  *
  * @param {String} name
+ * @param {Boolean} force
  * @return {ClassList}
  * @api public
  */
 
-ClassList.prototype.toggle = function(name){
+ClassList.prototype.toggle = function(name, force){
   // classList
   if (this.list) {
-    this.list.toggle(name);
+    if ("undefined" !== typeof force) {
+      if (force !== this.list.toggle(name, force)) {
+        this.list.toggle(name); // toggle again to correct
+      }
+    } else {
+      this.list.toggle(name);
+    }
     return this;
   }
 
   // fallback
-  if (this.has(name)) {
-    this.remove(name);
+  if ("undefined" !== typeof force) {
+    if (!force) {
+      this.remove(name);
+    } else {
+      this.add(name);
+    }
   } else {
-    this.add(name);
+    if (this.has(name)) {
+      this.remove(name);
+    } else {
+      this.add(name);
+    }
   }
+
   return this;
 };
 
@@ -373,8 +392,7 @@ ClassList.prototype.contains = function(name){
 };
 
 });
-require.register("math-utils-linear-partitioning/linear-partitioning.js", function(exports, require, module){
-
+require.register("the-swerve-linear-partitioning/linear-partitioning.js", function(exports, require, module){
 // Explanation: http://www8.cs.umu.se/kurser/TDBAfl/VT06/algorithms/BOOK/BOOK2/NODE45.HTM
 
 // Partition seq into k buckets
@@ -447,7 +465,7 @@ Make each element the sum of all the numbers from 0...i
 For example, given [1,2,3,4,5]
 The prefix sums are [1,3,6,10,15]
 */
-var prefix_sums = function(seq, k) {
+var prefix_sums = function(seq) {
 
 	var sums = [0];
 
@@ -679,10 +697,10 @@ require.alias("component-classes/index.js", "horizontal-grid-packing/deps/classe
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
 
-require.alias("math-utils-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/linear-partitioning.js");
-require.alias("math-utils-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/index.js");
-require.alias("math-utils-linear-partitioning/linear-partitioning.js", "linear-partitioning/index.js");
-require.alias("math-utils-linear-partitioning/linear-partitioning.js", "math-utils-linear-partitioning/index.js");
+require.alias("the-swerve-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/linear-partitioning.js");
+require.alias("the-swerve-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/index.js");
+require.alias("the-swerve-linear-partitioning/linear-partitioning.js", "linear-partitioning/index.js");
+require.alias("the-swerve-linear-partitioning/linear-partitioning.js", "the-swerve-linear-partitioning/index.js");
 require.alias("horizontal-grid-packing/lib/pack.js", "horizontal-grid-packing/index.js");if (typeof exports == "object") {
   module.exports = require("horizontal-grid-packing");
 } else if (typeof define == "function" && define.amd) {
