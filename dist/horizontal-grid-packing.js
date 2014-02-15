@@ -392,6 +392,14 @@ ClassList.prototype.contains = function(name){
 };
 
 });
+require.register("component-is-document-fragment/index.js", function(exports, require, module){
+var toString = Object.prototype.toString;
+
+module.exports = function isDocumentFragment(element) {
+  return element
+    && toString.call(element) === '[object DocumentFragment]'
+}
+});
 require.register("the-swerve-linear-partitioning/linear-partitioning.js", function(exports, require, module){
 // Explanation: http://www8.cs.umu.se/kurser/TDBAfl/VT06/algorithms/BOOK/BOOK2/NODE45.HTM
 
@@ -497,6 +505,7 @@ module.exports = partition;
 
 });
 require.register("horizontal-grid-packing/lib/pack.js", function(exports, require, module){
+var isFragment = require('is-document-fragment')
 var part = require('linear-partitioning')
 var classes = require('classes')
 
@@ -509,7 +518,7 @@ function Pack(container, options) {
   options = options || {}
 
   this.container = container
-  this.isFragment = container instanceof DocumentFragment
+  this.isFragment = isFragment(container)
   this.classes = !this.isFragment && classes(container)
   this.images = slice(container.childNodes).filter(isElement)
   this.top = options.top || 0
@@ -523,7 +532,7 @@ function Pack(container, options) {
 Pack.prototype.append = function (images) {
   var fragment
 
-  if (images instanceof DocumentFragment) {
+  if (isFragment(images)) {
     fragment = images
     images = slice(fragment.childNodes)
   } else {
@@ -693,9 +702,13 @@ function isElement(el) {
 });
 
 
+
 require.alias("component-classes/index.js", "horizontal-grid-packing/deps/classes/index.js");
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
+
+require.alias("component-is-document-fragment/index.js", "horizontal-grid-packing/deps/is-document-fragment/index.js");
+require.alias("component-is-document-fragment/index.js", "is-document-fragment/index.js");
 
 require.alias("the-swerve-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/linear-partitioning.js");
 require.alias("the-swerve-linear-partitioning/linear-partitioning.js", "horizontal-grid-packing/deps/linear-partitioning/index.js");

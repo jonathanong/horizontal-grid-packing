@@ -11,6 +11,7 @@
   "main": "lib/pack.js",
   "dependencies": {
     "component/classes": "*",
+    "component/is-document-fragment": "*",
     "the-swerve/linear-partitioning": "*"
   },
   "development": {
