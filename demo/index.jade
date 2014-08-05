@@ -52,11 +52,6 @@ html(lang="en")
         pending = false
       }
 
-      function append() {
-        var frag = document.createElement('div')
-        frag.innerHTML = imagesHTML
-        pack.append(frag.children)
-      }
 
       function height() {
         return Math.max(Math.round(window.outerHeight / Math.PI), 120)
