@@ -21,5 +21,8 @@
   "devDependencies": {
     "jade": "*",
     "request": "*"
+  },
+  "dependencies": {
+    "linear-partitioning": "^0.3.1"
   }
 }
