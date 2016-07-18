@@ -23,6 +23,7 @@
     "request": "*"
   },
   "dependencies": {
+    "classes": "^0.3.0",
     "linear-partitioning": "^0.3.1"
   }
 }
