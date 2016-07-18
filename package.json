@@ -1,5 +1,6 @@
 {
   "name": "horizontal-grid-packing",
+  "main": "lib/pack.js",
   "description": "Horizontal grid packing",
   "version": "0.1.4",
   "author": {
