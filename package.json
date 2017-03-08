@@ -20,7 +20,8 @@
   "license": "MIT",
   "devDependencies": {
     "jade": "*",
-    "request": "*"
+    "request": "*",
+    "tape": "^4.6.3"
   },
   "dependencies": {
     "classes": "^0.3.0",
