@@ -24,7 +24,7 @@
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "classes": "^0.3.0",
+    "component-classes": "^1.2.6",
     "linear-partitioning": "^0.3.1"
   }
 }
