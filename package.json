@@ -1,5 +1,6 @@
 {
   "name": "horizontal-grid-packing",
+  "main": "lib/pack.js",
   "description": "Horizontal grid packing",
   "version": "0.1.4",
   "author": {
@@ -19,6 +20,11 @@
   "license": "MIT",
   "devDependencies": {
     "jade": "*",
-    "request": "*"
+    "request": "*",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "component-classes": "^1.2.6",
+    "linear-partitioning": "^0.3.1"
   }
 }

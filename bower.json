@@ -1,9 +1,0 @@
-{
-  "name": "horizontal-grid-packing",
-  "description": "Horizontal grid packing",
-  "version": "0.1.4",
-  "main": [
-    "dist/horizontal-grid-packing.js",
-    "dist/horizontal-grid-packing.css"
-  ]
-}
